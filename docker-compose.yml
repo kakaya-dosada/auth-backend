@@ -5,7 +5,7 @@ services:
     ports:
       - "${REDIS_DB_PORT}:6379"
   psql_bp:
-    image: postgres:latest
+    build: build/postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB_DATABASE}
