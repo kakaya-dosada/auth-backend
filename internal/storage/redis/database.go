@@ -1,9 +1,8 @@
-package database
+package redis
 
 import (
 	"context"
 	"fmt"
-	"log"
 	"math"
 	"os"
 	"strconv"
@@ -11,6 +10,7 @@ import (
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/kakaya-dosada/auth-backend/pkg/logger"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -23,16 +23,16 @@ type service struct {
 }
 
 var (
-	address  = os.Getenv("BLUEPRINT_DB_ADDRESS")
-	port     = os.Getenv("BLUEPRINT_DB_PORT")
-	password = os.Getenv("BLUEPRINT_DB_PASSWORD")
-	database = os.Getenv("BLUEPRINT_DB_DATABASE")
+	address  = os.Getenv("REDIS_DB_ADDRESS")
+	port     = os.Getenv("REDIS_DB_PORT")
+	password = os.Getenv("REDIS_DB_PASSWORD")
+	database = os.Getenv("REDIS_DB_DATABASE")
 )
 
 func New() Service {
 	num, err := strconv.Atoi(database)
 	if err != nil {
-		log.Fatalf(fmt.Sprintf("database incorrect %v", err))
+		logger.Fatalf(fmt.Sprintf("database incorrect %v", err))
 	}
 
 	fullAddress := fmt.Sprintf("%s:%s", address, port)
@@ -73,7 +73,7 @@ func (s *service) checkRedisHealth(ctx context.Context, stats map[string]string)
 	// Note: By extracting and simplifying like this, `log.Fatalf(fmt.Sprintf("db down: %v", err))`
 	// can be changed into a standard error instead of a fatal error.
 	if err != nil {
-		log.Fatalf(fmt.Sprintf("db down: %v", err))
+		logger.Fatalf(fmt.Sprintf("db down: %v", err))
 	}
 
 	// Redis is up

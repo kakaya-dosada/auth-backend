@@ -3,4 +3,18 @@ services:
     image: redis:7.2.4
     restart: unless-stopped
     ports:
-      - "${BLUEPRINT_DB_PORT}:6379"
+      - "${REDIS_DB_PORT}:6379"
+  psql_bp:
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB_DATABASE}
+      POSTGRES_USER: ${POSTGRES_DB_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
+    ports:
+      - "${POSTGRES_DB_PORT}:5432"
+    volumes:
+      - psql_volume_bp:/var/lib/postgresql/data
+
+volumes:
+  psql_volume_bp:

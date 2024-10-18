@@ -1,0 +1,24 @@
+basePath: /api/v1
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact: {}
+  description: AuthServer API
+  termsOfService: http://swagger.io/terms/
+  title: AuthServiceAPI
+  version: "1.0"
+paths:
+  /util/health:
+    get:
+      consumes:
+      - application/json
+      description: healthcheck
+      produces:
+      - application/json
+      responses: {}
+      summary: healthcheck
+      tags:
+      - util
+swagger: "2.0"

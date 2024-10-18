@@ -9,21 +9,22 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 
-	"github.com/kakaya-dosada/auth-backend/internal/database"
+	"github.com/kakaya-dosada/auth-backend/internal/storage/postgres"
+	"github.com/kakaya-dosada/auth-backend/internal/storage/redis"
 )
 
 type Server struct {
-	port int
-
-	db database.Service
+	port  int
+	cache redis.Service
+	db    postgres.Service
 }
 
 func NewServer() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	NewServer := &Server{
-		port: port,
-
-		db: database.New(),
+		port:  port,
+		cache: redis.New(),
+		db:    postgres.New(),
 	}
 
 	// Declare Server config
