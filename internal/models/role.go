@@ -4,7 +4,7 @@ import "time"
 
 // Role model
 type Role struct {
-	ID          uint `gorm:"primarykey"`
+	ID          string `gorm:"primarykey"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	Name        string `gorm:"size:50;not null;unique" json:"name"`

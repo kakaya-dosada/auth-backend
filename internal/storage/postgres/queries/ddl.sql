@@ -1,6 +1,6 @@
 -- Таблица Role
 CREATE TABLE IF NOT EXISTS roles (
-    id BIGINT PRIMARY KEY,
+    id VARCHAR PRIMARY KEY,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW(),
     name VARCHAR(50) UNIQUE NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS roles (
 
 -- Таблица User
 CREATE TABLE IF NOT EXISTS users (
-    id BIGINT PRIMARY KEY,
+    id VARCHAR PRIMARY KEY,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW(),
     role_id INT NOT NULL DEFAULT 3,

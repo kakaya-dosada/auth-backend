@@ -10,6 +10,35 @@ info:
   title: AuthServiceAPI
   version: "1.0"
 paths:
+  /user/new:
+    post:
+      consumes:
+      - application/json
+      description: Creates new user
+      parameters:
+      - description: role
+        in: query
+        name: role
+        type: string
+      - description: name
+        in: query
+        name: name
+        type: string
+      - description: email
+        format: email
+        in: query
+        name: email
+        type: string
+      - description: password
+        in: query
+        name: password
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: SaveUser
+      tags:
+      - util
   /util/health:
     get:
       consumes:

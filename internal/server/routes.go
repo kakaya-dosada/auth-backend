@@ -29,6 +29,10 @@ func (s *Server) RegisterRoutes() http.Handler {
 		{
 			eg.GET("/health", s.healthHandler)
 		}
+		usr := v1.Group("/user")
+		{
+			usr.POST("/new", s.SaveUser)
+		}
 
 	}
 	// use ginSwagger middleware to serve the API docs
