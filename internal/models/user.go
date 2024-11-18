@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -15,8 +16,14 @@ type User struct {
 	RoleID    string `gorm:"not null;DEFAULT:3" json:"role_id"`
 	Username  string `gorm:"size:255;not null;unique" json:"username"`
 	Email     string `gorm:"size:255;not null;unique" json:"email"`
-	Password  string `gorm:"size:255;not null" json:"-"`
+	Password  string `gorm:"size:255;not null" json:"password"`
 	Role      Role   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"-"`
+}
+type UserDto struct {
+	RoleID   string `gorm:"not null;DEFAULT:3" json:"role_id"`
+	Username string `gorm:"size:255;not null;unique" json:"username"`
+	Email    string `gorm:"size:255;not null;unique" json:"email"`
+	Password string `gorm:"size:255;not null" json:"password"`
 }
 
 // Validate user password
@@ -32,5 +39,6 @@ func (user *User) BeforeSave() error {
 	}
 	user.Password = string(passwordHash)
 	user.Username = html.EscapeString(strings.TrimSpace(user.Username))
+	user.ID = uuid.NewString()
 	return nil
 }

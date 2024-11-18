@@ -20,7 +20,7 @@ type Service interface {
 	// The keys and values in the map are service-specific.
 	Health() map[string]string
 
-	Save(RoleID, username, password, email string) (*models.User, error)
+	Save(user models.User) error
 	// Close terminates the database connection.
 	// It returns an error if the connection cannot be closed.
 	Close() error

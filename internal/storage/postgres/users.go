@@ -1,31 +1,19 @@
 package postgres
 
 import (
-	"github.com/google/uuid"
 	"github.com/kakaya-dosada/auth-backend/internal/models"
+	"github.com/kakaya-dosada/auth-backend/internal/storage/postgres/queries"
 )
 
 // // Save user details
-func (service *service) Save(RoleID, username, password, email string) (*models.User, error) {
-	user := models.User{
-		ID:       uuid.NewString(),
-		RoleID:   RoleID,
-		Username: username,
-		// Role:      service.GetRoleByID(RoleID),
-		Email:    email,
-		Password: password,
-	}
-	user.BeforeSave()
-	// user.Role, err := service.GetRoleByID(RoleID)
-	// if err != nil {
-	// return nil, err
-	// }
-	_, err := service.db.Exec("INSERT INTO users (id,username, email, password, role_id) values ($1,$2,$3,$4,$5)", user.ID, user.Username, user.Email, user.Password, user.RoleID)
-	if err != nil {
-		return nil, err
-	}
-	return &user, nil
+func (service *service) Save(user models.User) error {
 
+	user.BeforeSave()
+	_, err := service.db.Exec(queries.INSERT_USER, user.ID, user.Username, user.Email, user.Password, user.RoleID)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // 	err := database.Db.Create(&user).Error

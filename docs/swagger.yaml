@@ -1,44 +1,65 @@
-basePath: /api/v1
-externalDocs:
-  description: OpenAPI
-  url: https://swagger.io/resources/open-api/
-host: localhost:8080
+definitions:
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      password:
+        type: string
+      role_id:
+        type: string
+      updatedAt:
+        type: string
+      username:
+        type: string
+    type: object
+  models.UserDto:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      role_id:
+        type: string
+      username:
+        type: string
+    type: object
 info:
   contact: {}
-  description: AuthServer API
-  termsOfService: http://swagger.io/terms/
-  title: AuthServiceAPI
-  version: "1.0"
 paths:
   /user/new:
     post:
       consumes:
       - application/json
-      description: Creates new user
+      description: This will create a new user in the system
       parameters:
-      - description: role
-        in: query
-        name: role
-        type: string
-      - description: name
-        in: query
-        name: name
-        type: string
-      - description: email
-        format: email
-        in: query
-        name: email
-        type: string
-      - description: password
-        in: query
-        name: password
-        type: string
+      - description: Create user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserDto'
       produces:
       - application/json
-      responses: {}
-      summary: SaveUser
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create new user
       tags:
-      - util
+      - users
   /util/health:
     get:
       consumes:
