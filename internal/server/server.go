@@ -11,6 +11,7 @@ import (
 
 	"github.com/kakaya-dosada/auth-backend/internal/storage/postgres"
 	"github.com/kakaya-dosada/auth-backend/internal/storage/redis"
+	"github.com/kakaya-dosada/auth-backend/pkg/logger"
 )
 
 type Server struct {
@@ -34,6 +35,22 @@ func NewServer() *http.Server {
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
+	}
+
+	if os.Getenv("restoreCacheOnRestart") == "true" {
+		logger.Infof("Restoring Cache from DB ...")
+		go func() {
+			users, err := NewServer.db.AllUsers()
+			if err != nil {
+				logger.Warnf(err.Error())
+			}
+			err = NewServer.cache.RestoreUsers(users)
+			if err != nil {
+				logger.Warnf(err.Error())
+			}
+		}()
+		logger.Infof("Restored cache!")
+
 	}
 
 	return server

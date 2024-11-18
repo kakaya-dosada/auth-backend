@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kakaya-dosada/auth-backend/internal/models"
+	"github.com/kakaya-dosada/auth-backend/pkg/logger"
 )
 
 // @BasePath     /api/v1
@@ -21,6 +22,7 @@ import (
 func (s *Server) SaveUser(c *gin.Context) {
 	// user, err := s.db.Save(c.Query("role"), c.Query("name"), c.Query("password"), c.Query("email"))
 	var user models.User
+	user.BeforeSave()
 	if err := c.ShouldBindJSON(&user); err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": "wrong http data"})
@@ -32,6 +34,10 @@ func (s *Server) SaveUser(c *gin.Context) {
 		c.JSON(500, map[string]error{"Error": err}) //todo UTIL erroring
 		c.Abort()
 		return
+	}
+
+	if err := s.cache.Save(user); err != nil {
+		logger.Warnf("Cache will be ignored cause redis unavialable %v", err)
 	}
 	c.JSON(201, map[string]string{"Created User": user.Username})
 

@@ -8,12 +8,30 @@ import (
 // // Save user details
 func (service *service) Save(user models.User) error {
 
-	user.BeforeSave()
 	_, err := service.db.Exec(queries.INSERT_USER, user.ID, user.Username, user.Email, user.Password, user.RoleID)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (service *service) AllUsers() ([]models.User, error) {
+	rows, err := service.db.Query(queries.SELECT_ALL_USERS)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []models.User
+	for rows.Next() {
+		var user models.User
+		if err := rows.Scan(&user.ID, &user.CreatedAt, &user.UpdatedAt, &user.RoleID, &user.Username, &user.Email, &user.Password); err != nil {
+			//skip
+			_ = "a"
+		}
+		users = append(users, user)
+	}
+	return users, nil
 }
 
 // 	err := database.Db.Create(&user).Error

@@ -10,12 +10,15 @@ import (
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/kakaya-dosada/auth-backend/internal/models"
 	"github.com/kakaya-dosada/auth-backend/pkg/logger"
 	"github.com/redis/go-redis/v9"
 )
 
 type Service interface {
 	Health() map[string]string
+	Save(user models.User) error
+	RestoreUsers(users []models.User) error
 }
 
 type service struct {
