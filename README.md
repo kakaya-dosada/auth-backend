@@ -59,8 +59,7 @@ make clean
 
 TODO:
 
-- db error handeling
-- swagger auth
-- login/register
-- get self
-- get * users
+- router middleware dublication issue
+- fix pwd decrypt and compare and hash current pwd
+- refactor and swagger
+- S3 integration for avatars

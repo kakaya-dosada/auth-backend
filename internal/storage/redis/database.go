@@ -19,6 +19,8 @@ type Service interface {
 	Health() map[string]string
 	Save(user models.User) error
 	RestoreUsers(users []models.User) error
+	GetUserByID(id string) (*models.User, error)
+	GetUserByName(name string) (*models.User, error)
 }
 
 type service struct {

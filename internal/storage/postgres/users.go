@@ -34,6 +34,10 @@ func (service *service) AllUsers() ([]models.User, error) {
 	return users, nil
 }
 
+func (service *service) GetUserByID(id string) (*models.User, error) {
+	return nil, nil
+}
+
 // 	err := database.Db.Create(&user).Error
 // 	if err != nil {
 // 		return &User{}, err

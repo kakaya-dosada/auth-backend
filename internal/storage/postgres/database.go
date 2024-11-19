@@ -21,6 +21,7 @@ type Service interface {
 	Health() map[string]string
 	AllUsers() ([]models.User, error)
 	Save(user models.User) error
+	GetUserByID(id string) (*models.User, error)
 	// Close terminates the database connection.
 	// It returns an error if the connection cannot be closed.
 	Close() error

@@ -21,7 +21,6 @@ import (
 // @Failure 500 {string} string "Internal Server Error"
 // @Router       /user/new [POST]
 func (s *Server) SaveUser(c *gin.Context) {
-	// user, err := s.db.Save(c.Query("role"), c.Query("name"), c.Query("password"), c.Query("email"))
 	var user models.User
 	user.BeforeSave()
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -32,7 +31,7 @@ func (s *Server) SaveUser(c *gin.Context) {
 	}
 	//cache
 	if err := s.db.Save(user); err != nil {
-		c.JSON(500, map[string]string{"error": util.DBErrors["MustBeUnique"]}) //todo UTIL erroring
+		c.JSON(500, map[string]string{"error": util.DBErrors["MustBeUnique"]})
 		c.Abort()
 		return
 	}

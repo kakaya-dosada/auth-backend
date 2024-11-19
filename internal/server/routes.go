@@ -29,6 +29,10 @@ func (s *Server) RegisterRoutes() http.Handler {
 		{
 			eg.GET("/health", s.healthHandler)
 		}
+		auth := v1.Group("/auth")
+		{
+			auth.POST("/login", s.AuthHandler)
+		}
 		admin := v1.Use(s.AdminMiddleware)
 		{
 			admin.POST("/user/new", s.SaveUser)
@@ -36,7 +40,16 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 		protected := v1.Use(s.AuthMiddleware)
 		{
-			protected.POST("/user/popa", func(c *gin.Context) { return })
+			protected.POST("/user/popa", func(c *gin.Context) {
+				username := c.MustGet("username").(string)
+				user, err := s.findUserByName(username)
+				if err != nil {
+					c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "User not found"})
+					return
+				}
+
+				c.JSON(http.StatusOK, user)
+			})
 
 		}
 
