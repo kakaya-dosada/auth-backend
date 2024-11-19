@@ -55,3 +55,12 @@ Clean up binary from the last build:
 ```bash
 make clean
 ```
+
+
+TODO:
+
+- db error handeling
+- swagger auth
+- login/register
+- get self
+- get * users

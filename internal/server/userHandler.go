@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kakaya-dosada/auth-backend/internal/models"
+	"github.com/kakaya-dosada/auth-backend/internal/util"
 	"github.com/kakaya-dosada/auth-backend/pkg/logger"
 )
 
@@ -31,7 +32,7 @@ func (s *Server) SaveUser(c *gin.Context) {
 	}
 	//cache
 	if err := s.db.Save(user); err != nil {
-		c.JSON(500, map[string]error{"Error": err}) //todo UTIL erroring
+		c.JSON(500, map[string]string{"error": util.DBErrors["MustBeUnique"]}) //todo UTIL erroring
 		c.Abort()
 		return
 	}

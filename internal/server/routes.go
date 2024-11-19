@@ -29,9 +29,15 @@ func (s *Server) RegisterRoutes() http.Handler {
 		{
 			eg.GET("/health", s.healthHandler)
 		}
-		usr := v1.Group("/user")
+		admin := v1.Use(s.AdminMiddleware)
 		{
-			usr.POST("/new", s.SaveUser)
+			admin.POST("/user/new", s.SaveUser)
+		}
+
+		protected := v1.Use(s.AuthMiddleware)
+		{
+			protected.POST("/user/popa", func(c *gin.Context) { return })
+
 		}
 
 	}
