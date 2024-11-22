@@ -33,11 +33,6 @@ func (s *Server) RegisterRoutes() http.Handler {
 		{
 			auth.POST("/login", s.AuthHandler)
 		}
-		admin := v1.Use(s.AdminMiddleware)
-		{
-			admin.POST("/user/new", s.SaveUser)
-		}
-
 		protected := v1.Use(s.AuthMiddleware)
 		{
 			protected.POST("/user/popa", func(c *gin.Context) {
@@ -53,6 +48,14 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 		}
 
+	}
+
+	admin := r.Group("/api/v1/user")
+	{
+		auth := admin.Use(s.AdminMiddleware)
+		{
+			auth.POST("/new", s.SaveUser)
+		}
 	}
 	// use ginSwagger middleware to serve the API docs
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
